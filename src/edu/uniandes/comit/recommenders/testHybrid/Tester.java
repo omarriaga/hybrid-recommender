@@ -29,8 +29,6 @@ public class Tester {
 		recommender.setWordListFile("artists.dat");
 		//La implementaci�n crea unos vectores de similitud, que guarda en el archivo cos-sim-vectors.txt, ya fueron calculados
 		recommender.setFeatureWeightFile("tag_weight.txt");
-		recommender.setMinSimilarityForPrediction("0.95");
-		recommender.setNbNeighborsForPrediction("30");
 		recommender.init();
 		System.out.println("Creando recomendaciones");
 		/*List<Integer> lista = recommender.recommendItems(2);

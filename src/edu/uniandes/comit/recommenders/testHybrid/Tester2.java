@@ -25,6 +25,9 @@ public class Tester2 {
 		NearestNeighbors recommender = new NearestNeighbors();
 		recommender.setDataModel(model);
 		recommender.setItemBased("true");
+		recommender.setSimThreshold("0.8");
+		recommender.setNeighbors("30");
+		recommender.setSimilarityMetric("Cosine");
 		recommender.init();
 		System.out.println("generando recomendacion");
 		
@@ -44,8 +47,9 @@ public class Tester2 {
 		precision_metric.setRecommender(recommender);
 		precision_metric.setTestDataModel(model_test);
 		precision_metric.setTrainingDataModel(model);
-		precision_metric.initialize();
 		precision_metric.setTargetSet("allrelevantintestset");
+		precision_metric.initialize();
+		
 		
 		//System.out.println("precision: "+precision_metric.getEvaluationResult());
 		
@@ -53,13 +57,14 @@ public class Tester2 {
 		recall_metric.setRecommender(recommender);
 		recall_metric.setTestDataModel(model_test);
 		recall_metric.setTrainingDataModel(model);
-		recall_metric.initialize();
 		recall_metric.setTargetSet("allrelevantintestset");
+		recall_metric.initialize();
+		
 		
 		//System.out.println("Recall: "+recall_metric.getEvaluationResult());
 		System.out.println("iniciando evaluacion "+model_test.getUsers().size()+" usuarios");
 		for (int user : model_test.getUsers()){
-			System.out.println("evaluando usuario" +user);
+			System.out.println("evaluando usuario: " +user);
 			//recommender.recommendItemsByRatingPrediction(user)
 			List<Integer> lista = recommender.recommendItems(user);
 			precision_metric.addRecommendations(user, lista );

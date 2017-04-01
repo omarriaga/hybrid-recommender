@@ -23,14 +23,17 @@ public class HybridRecommender extends AbstractRecommender {
 	@Override
 	public List<Integer> recommendItems(int user) {
 		try{
+			System.out.println("obteniendo recomendacion por contenido");
 			List<Integer> items_content = contentBasedRecommender.recommendItems(user);
 			for (int item : items_content){
 				model.addRating(user, item, contentBasedRecommender.predictRating(user, item));
 			}
 			itemBasedRecommender.init();
+			System.out.println("obteniendo refinacion por filtro colaborativo");
 			List<Integer> recomendacion = itemBasedRecommender.recommendItems(user);
 			return recomendacion;
 		}catch(Exception ex){
+			ex.printStackTrace();
 			return new LinkedList<>();
 		}
 	}
@@ -57,12 +60,9 @@ public class HybridRecommender extends AbstractRecommender {
 		this.itemBasedRecommender= new NearestNeighbors();
 		itemBasedRecommender.setItemBased("true");
 		itemBasedRecommender.setDataModel(model);
+		itemBasedRecommender.setNeighbors("30");
 		itemBasedRecommender.init();
 	
-		
-		
-		
-		
 	}
 
 }
