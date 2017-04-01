@@ -24,7 +24,7 @@ public class ttt {
 		reed.readLine();//header
 		int i=1;
 		while((line=reed.readLine())!=null){
-			if(i%4==0){
+			if(i%5==0){
 				prtest.println(line);
 			}else{
 				prload.println(line);
@@ -34,5 +34,6 @@ public class ttt {
 		reed.close();
 		prload.close();
 		prtest.close();
+		System.out.println("finish");
 	}
 }
