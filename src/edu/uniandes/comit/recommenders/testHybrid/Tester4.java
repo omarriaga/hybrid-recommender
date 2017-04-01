@@ -21,7 +21,7 @@ public class Tester4 {
 			loader.loadData(model);
 			//iniciando recomendador
 			HybridRecommender recommender = new HybridRecommender();
-			recommender.init();
+			
 			//cargando metricas
 			DataModel model_test = new DataModel();
 			System.out.println("Cargando modelo");
@@ -46,13 +46,30 @@ public class Tester4 {
 			
 			//System.out.println("Recall: "+recall_metric.getEvaluationResult());
 			System.out.println("iniciando evaluacion "+model_test.getUsers().size()+" usuarios");
+			recommender.init();
+			List<Integer> lista = recommender.recommendItems(120);
+			int i=1;
+			for(Integer a :lista){
+				System.out.println("recomendación "+i+": "+a+":"+recommender.predictRating(2, a));
+				i++;
+			}
+			precision_metric.addRecommendations(2, lista );
+			recall_metric.addRecommendations(2, lista );
+			//System.out.println("precision: "+precision_metric.getEvaluationResult());
+			//System.out.println("Recall: "+recall_metric.getEvaluationResult());
+			
+			/*
 			for (int user : model_test.getUsers()){
-				System.out.println("evaluando usuario" +user);
+				System.out.println("evaluando usuario: " +user);
 				//recommender.recommendItemsByRatingPrediction(user)
+				recommender.init();
 				List<Integer> lista = recommender.recommendItems(user);
 				precision_metric.addRecommendations(user, lista );
 				recall_metric.addRecommendations(user, lista );
-			}
+				System.out.println("precision: "+precision_metric.getEvaluationResult());
+				System.out.println("Recall: "+recall_metric.getEvaluationResult());
+				System.out.println("===================================================");
+			}*/
 			System.out.println("precision: "+precision_metric.getEvaluationResult());
 			System.out.println("Recall: "+recall_metric.getEvaluationResult());
 			LocalDateTime fin = LocalDateTime.now();

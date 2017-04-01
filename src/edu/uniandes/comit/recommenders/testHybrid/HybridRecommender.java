@@ -17,20 +17,26 @@ public class HybridRecommender extends AbstractRecommender {
 
 	@Override
 	public float predictRating(int user, int item) {
-		return 0;
+		return itemBasedRecommender.predictRating(user, item);
 	}
 
 	@Override
 	public List<Integer> recommendItems(int user) {
 		try{
-			System.out.println("obteniendo recomendacion por contenido");
+			System.out.println("obteniendo recomendacion por FC");
 			List<Integer> items_content = contentBasedRecommender.recommendItems(user);
+			DataModel model_extracted = new DataModel();
 			for (int item : items_content){
+				//model_extracted.addRating(user, item, contentBasedRecommender.predictRating(user, item));
+				System.out.println("recomendación: "+item+":"+contentBasedRecommender.predictRating(user, item));
 				model.addRating(user, item, contentBasedRecommender.predictRating(user, item));
 			}
+			
+			System.out.println("obteniendo refinacion por contenido");
+			//itemBasedRecommender.setDataModel(model_extracted);
 			itemBasedRecommender.init();
-			System.out.println("obteniendo refinacion por filtro colaborativo");
 			List<Integer> recomendacion = itemBasedRecommender.recommendItems(user);
+			System.out.println("recomendation size: "+recomendacion.size());
 			return recomendacion;
 		}catch(Exception ex){
 			ex.printStackTrace();
@@ -61,7 +67,9 @@ public class HybridRecommender extends AbstractRecommender {
 		itemBasedRecommender.setItemBased("true");
 		itemBasedRecommender.setDataModel(model);
 		itemBasedRecommender.setNeighbors("30");
-		itemBasedRecommender.init();
+		itemBasedRecommender.setSimThreshold("0.7");
+		itemBasedRecommender.setSimilarityMetric("Jaccard");
+		//itemBasedRecommender.init();
 	
 	}
 
